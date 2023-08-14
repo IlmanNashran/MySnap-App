@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _titleWidget(),
+                _loginButton(),
               ],
             ),
           ),
@@ -38,7 +39,22 @@ class _LoginPageState extends State<LoginPage> {
     return const Text(
       "Snap App",
       style: TextStyle(
-          color: Colors.white, fontSize: 25, fontWeight: FontWeight.w300),
+          color: Colors.black, fontSize: 40, fontWeight: FontWeight.w500),
+    );
+  }
+
+ //fucntion for showing button login
+  Widget _loginButton() {
+    return MaterialButton(
+      onPressed: () {},
+      minWidth: _deviceWidth! * 0.70,
+      height: _deviceHeight! * 0.06,
+      color: Colors.red,
+      child: const Text(
+        "Login",
+        style: TextStyle(
+            color: Colors.white, fontSize: 24, fontWeight: FontWeight.w500),
+      ),
     );
   }
 }
