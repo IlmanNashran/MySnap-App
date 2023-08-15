@@ -54,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
   //register button
   Widget _registerButton() {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: _registerUser,
       minWidth: _deviceWidth! * 0.50,
       height: _deviceHeight! * 0.05,
       color: Colors.red,
@@ -131,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-//select image using file_picker 
+//select image using file_picker
   Widget _profileImageWidget() {
     var _imageProvider = _image != null
         ? FileImage(_image!)
@@ -155,5 +155,13 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  //save form input by using registerbutton
+  void _registerUser() {
+    if (_registerFormKey.currentState!.validate() && _image != null) {
+      _registerFormKey.currentState!.save();
+      print("valid");
+    }
   }
 }
