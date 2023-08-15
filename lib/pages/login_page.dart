@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
   //fucntion for showing button login
   Widget _loginButton() {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: _loginUser,
       minWidth: _deviceWidth! * 0.70,
       height: _deviceHeight! * 0.06,
       color: Colors.red,
@@ -95,14 +95,14 @@ class _LoginPageState extends State<LoginPage> {
         bool _result = _value!.contains(
           RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'),
         );
-        _result ? null : "Please enter a valid email";
+        return _result ? null : "Please enter a valid email";
       },
     );
   }
 
   Widget _passwordTextField() {
     return TextFormField(
-      obscureText: true,
+      obscureText: true, //unseen the password
       decoration: const InputDecoration(hintText: "Password...."),
       onSaved: (_value) {
         setState(() {
@@ -112,5 +112,12 @@ class _LoginPageState extends State<LoginPage> {
       validator: (_value) =>
           _value!.length > 6 ? null : "Please enter a valid password",
     );
+  }
+
+  void _loginUser() {
+    //print(_loginFormKey.currentState!.validate());   // for checking the validate  //calling validator() function
+    if (_loginFormKey.currentState!.validate()) {
+      _loginFormKey.currentState!.save();
+    } else {}
   }
 }
