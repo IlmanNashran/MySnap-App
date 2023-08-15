@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
                 _titleWidget(),
                 _loginForm(),
                 _loginButton(),
+                _registerPageLink(),
               ],
             ),
           ),
@@ -65,6 +66,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _registerPageLink() {
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, 'register'),
+      child: const Text(
+        "Dont have an account?",
+        style: TextStyle(
+            color: Colors.blue, fontSize: 15, fontWeight: FontWeight.w400),
+      ),
+    );
+  }
+
+//form widget
   Widget _loginForm() {
     return Container(
       height: _deviceHeight! * 0.20,
