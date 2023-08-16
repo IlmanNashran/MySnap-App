@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysnap_app/pages/home_page.dart';
 import 'package:mysnap_app/pages/login_page.dart';
 import 'package:mysnap_app/pages/register_page.dart';
 
@@ -15,13 +16,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My Snap App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.red,
       ),
-      initialRoute: 'login', //first route auto
+      initialRoute: 'home', //first route auto
       routes: {
         'register': (context) => RegisterPage(),
         'login': (context) => LoginPage(),
+        'home': (context) => HomePage(),
       },
     );
   }
