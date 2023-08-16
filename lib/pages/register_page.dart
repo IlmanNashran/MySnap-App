@@ -10,6 +10,11 @@ class RegisterPage extends StatefulWidget {
   }
 }
 
+
+//----------------------------------------------------------------------
+
+
+
 class _RegisterPageState extends State<RegisterPage> {
   double? _deviceHeight, _deviceWidth;
 
