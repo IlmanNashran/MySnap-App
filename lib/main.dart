@@ -8,7 +8,8 @@ import 'package:mysnap_app/pages/services/firebase_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //initilize first
-  await Firebase.initializeApp(); //before execute the initializeApp need to initilize
+  await Firebase
+      .initializeApp(); //before execute the initializeApp need to initilize
   GetIt.instance.registerSingleton<FirebaseService>(FirebaseService());
   runApp(const MyApp());
 }
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      initialRoute: 'home', //first route auto
+      initialRoute: 'login', //first route auto
       routes: {
         'register': (context) => RegisterPage(),
         'login': (context) => LoginPage(),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mysnap_app/pages/services/firebase_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,11 +12,19 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double? _deviceWidth, _deviceHeight;
 
+  FirebaseService? _firebaseService;
+
   final GlobalKey<FormState> _loginFormKey =
       GlobalKey<FormState>(); //create variable for form  name "_loginFormKey"
 
   String? _email;
   String? _password;
+
+  @override
+  void initState() {
+    super.initState();
+    _firebaseService = GetIt.instance.get<FirebaseService>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
       decoration: const InputDecoration(hintText: "Password...."),
       onSaved: (_value) {
         setState(() {
-          _email = _value;
+          _password = _value;
         });
       },
       validator: (_value) =>
@@ -127,10 +137,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _loginUser() {
+  void _loginUser() async {
     //print(_loginFormKey.currentState!.validate());   // for checking the validate  //calling validator() function
     if (_loginFormKey.currentState!.validate()) {
       _loginFormKey.currentState!.save();
-    } else {}
+      bool result = await _firebaseService! //adding firebase check
+          .loginUser(email: _email!, password: _password!);
+      if (result) Navigator.popAndPushNamed(context, 'home');
+    }
   }
 }
