@@ -82,27 +82,35 @@ class FirebaseService {
     return _doc.data() as Map;
   }
 
-  //post function
+  //post function to save in firebase
   Future<bool> postImage(File _image) async {
     try {
-         String _userId = _auth.currentUser!.uid;
-    String _fileName = Timestamp.now().microsecondsSinceEpoch.toString() +
-        p.extension(_image.path);
-    UploadTask _task =
-        _storage.ref('images/$_userId/$_fileName ').putFile(_image);
-    return await _task.then((_snapshot) async {
-      String _downloadURL = await _snapshot.ref.getDownloadURL();
-      await _db.collection(POST_COLLECTION).add({
-        //add post to db
-        "userId": _userId,
-        "timestamp": Timestamp.now(),
-        "image": _downloadURL,
+      String _userId = _auth.currentUser!.uid;
+      String _fileName = Timestamp.now().microsecondsSinceEpoch.toString() +
+          p.extension(_image.path);
+      UploadTask _task =
+          _storage.ref('images/$_userId/$_fileName ').putFile(_image);
+      return await _task.then((_snapshot) async {
+        String _downloadURL = await _snapshot.ref.getDownloadURL();
+        await _db.collection(POST_COLLECTION).add({
+          //add post to db
+          "userId": _userId,
+          "timestamp": Timestamp.now(),
+          "image": _downloadURL,
+        });
+        return true;
       });
-      return true;
-    });
     } catch (e) {
       print(e);
       return false;
     }
+  }
+
+  //show picture from firebase
+  Stream<QuerySnapshot> getLatestPosts() {
+   return _db
+        .collection(POST_COLLECTION)
+        .orderBy('timestamp', descending: true)
+        .snapshots();
   }
 }
