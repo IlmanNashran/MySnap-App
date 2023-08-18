@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 final String USER_COLLECTION = 'users';
+final String POST_COLLECTION = 'posts';
 
 class FirebaseService {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,6 +18,7 @@ class FirebaseService {
 
   FirebaseService();
 
+//setup register firebase
   Future<bool> registerUser({
     required String name,
     required String password,
@@ -78,5 +80,29 @@ class FirebaseService {
     DocumentSnapshot _doc =
         await _db.collection(USER_COLLECTION).doc(uid).get();
     return _doc.data() as Map;
+  }
+
+  //post function
+  Future<bool> postImage(File _image) async {
+    try {
+         String _userId = _auth.currentUser!.uid;
+    String _fileName = Timestamp.now().microsecondsSinceEpoch.toString() +
+        p.extension(_image.path);
+    UploadTask _task =
+        _storage.ref('images/$_userId/$_fileName ').putFile(_image);
+    return await _task.then((_snapshot) async {
+      String _downloadURL = await _snapshot.ref.getDownloadURL();
+      await _db.collection(POST_COLLECTION).add({
+        //add post to db
+        "userId": _userId,
+        "timestamp": Timestamp.now(),
+        "image": _downloadURL,
+      });
+      return true;
+    });
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }
