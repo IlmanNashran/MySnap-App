@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mysnap_app/pages/services/firebase_service.dart';
 
@@ -37,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           _profileImage(),
+          _postGridView(),
         ],
       ),
     );
@@ -60,6 +63,39 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-
-  
+  //get all post based on user
+  Widget _postGridView() {
+    return Expanded(
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _firebaseService!.getPostsForUser(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List _posts = snapshot.data!.docs.map((e) => e.data()).toList();
+            return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemCount: _posts.length,
+                itemBuilder: (context, index) {
+                  Map _post = _posts[index];
+                  return Container(
+                      
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(_post['image']),
+                      ),
+                    ),
+                  );
+                });
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.red,
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
 }
