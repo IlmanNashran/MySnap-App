@@ -108,9 +108,11 @@ class FirebaseService {
 
   //show picture from firebase
   Stream<QuerySnapshot> getLatestPosts() {
-   return _db
+    return _db
         .collection(POST_COLLECTION)
         .orderBy('timestamp', descending: true)
         .snapshots();
   }
+
+
 }
