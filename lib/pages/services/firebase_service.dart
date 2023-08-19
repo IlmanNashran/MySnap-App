@@ -108,8 +108,18 @@ class FirebaseService {
 
   //show picture from firebase
   Stream<QuerySnapshot> getLatestPosts() {
-   return _db
+    return _db
         .collection(POST_COLLECTION)
+        .orderBy('timestamp', descending: true)
+        .snapshots();
+  }
+
+//get user all post image
+  Stream<QuerySnapshot> getPostsForUser() {
+    String _userID = _auth.currentUser!.uid;
+    return _db
+        .collection(POST_COLLECTION)
+        .where('userId', isEqualTo: _userID)
         .orderBy('timestamp', descending: true)
         .snapshots();
   }
